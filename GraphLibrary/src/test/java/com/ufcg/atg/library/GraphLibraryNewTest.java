@@ -7,6 +7,8 @@ import com.ufcg.atg.graph.WeightedEdge;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Set;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -48,8 +50,6 @@ class GraphLibraryNewTest {
         graphWeighted = graphLibrary.readWeightedGraph(sampleWeightedGraph);
         graphBlank = graphLibrary.readGraph(sampleGraphWithBlankLine);
         graphDuplicatedEdge = graphLibrary.readGraph(duplicatedEdgeGraph);
-
-//        graphVertexLoop = graphLibrary.readGraph(vertexLoopGraph);
 
     }
 
@@ -223,6 +223,158 @@ class GraphLibraryNewTest {
         assertEquals(false, graphLibrary.containsVertex(graph, 31));
     }
 
+
+    @Test
+    public void testGetAdjacentVertexNullUnweightedGraph() {
+        Set<Integer> adjcent = null;
+        try {
+             adjcent = graphLibrary.getAdjacentVertexes(graph, null);
+        } catch (Exception e) {
+            assertEquals("A vertex can't be null. So, no adjacent were found.", e.getMessage());
+        }
+        assertTrue(adjcent == null);
+    }
+
+    @Test
+    public void testGetAdjacentNonexistentVertexUnweightedGraph() {
+        Set<Integer> adjcent = null;
+        try {
+            adjcent = graphLibrary.getAdjacentVertexes(graph, 51);
+        } catch (Exception e) {
+            assertEquals("The graph doesn't contains the specified vertex.", e.getMessage());
+        }
+        assertTrue(adjcent == null);
+    }
+
+    @Test
+    public void testGetAdjacentExistentVertexUnweightedGraph() {
+        Set<Integer> adjcent = null;
+
+        assertEquals(true, graphLibrary.containsVertex(graph, 2));
+
+        try {
+            adjcent = graphLibrary.getAdjacentVertexes(graph, 2);
+        } catch (Exception e) {
+            assertTrue(e.getMessage() == null);
+        }
+        assertTrue(adjcent != null);
+    }
+
+
+    @Test
+    public void testGetAdjacentVertexNullWeightedGraph() {
+        Set<Integer> adjcent = null;
+        try {
+            adjcent = graphLibrary.getAdjacentVertexes(graphWeighted, null);
+        } catch (Exception e) {
+            assertEquals("A vertex can't be null. So, no adjacent were found.", e.getMessage());
+        }
+        assertTrue(adjcent == null);
+    }
+
+    @Test
+    public void testGetAdjacentNonexistentVertexWeightedGraph() {
+        Set<Integer> adjcent = null;
+        try {
+            adjcent = graphLibrary.getAdjacentVertexes(graphWeighted, 51);
+        } catch (Exception e) {
+            assertEquals("The graph doesn't contains the specified vertex.", e.getMessage());
+        }
+        assertTrue(adjcent == null);
+    }
+
+    @Test
+    public void testGetAdjacentExistentVertexWeightedGraph() {
+        Set<Integer> adjcent = null;
+
+        assertEquals(true, graphLibrary.containsVertex(graphWeighted, 2));
+
+        try {
+            adjcent = graphLibrary.getAdjacentVertexes(graphWeighted, 2);
+        } catch (Exception e) {
+            assertTrue(e.getMessage() == null);
+        }
+        assertTrue(adjcent != null);
+    }
+
+
+    @Test
+    public void testGetVertexEdgesVertexNullUnweightedGraph() {
+        Set<?> adjcent = null;
+        try {
+            adjcent = graphLibrary.getEdgesOfVertex(graph, null);
+        } catch (Exception e) {
+            assertEquals("A vertex can't be null. So, no adjacent were found.", e.getMessage());
+        }
+        assertTrue(adjcent == null);
+    }
+
+    @Test
+    public void testGetVertexEdgesNonexistentVertexUnweightedGraph() {
+        Set<?> adjcent = null;
+        try {
+            adjcent = graphLibrary.getEdgesOfVertex(graph, 51);
+        } catch (Exception e) {
+            assertEquals("The graph doesn't contains the specified vertex.", e.getMessage());
+        }
+        assertTrue(adjcent == null);
+    }
+
+    @Test
+    public void testGetVertexEdgesExistentVertexUnweightedGraph() {
+        Set<?> adjcent = null;
+
+        assertEquals(true, graphLibrary.containsVertex(graph, 2));
+
+        try {
+            adjcent = graphLibrary.getEdgesOfVertex(graph, 2);
+        } catch (Exception e) {
+            assertTrue(e.getMessage() == null);
+        }
+        assertTrue(adjcent != null);
+    }
+
+
+
+    @Test
+    public void testGetVertexEdgesVertexNullWeightedGraph() {
+        Set<?> adjcent = null;
+        try {
+            adjcent = graphLibrary.getEdgesOfVertex(graphWeighted, null);
+        } catch (Exception e) {
+            assertEquals("A vertex can't be null. So, no adjacent were found.", e.getMessage());
+        }
+        assertTrue(adjcent == null);
+    }
+
+    @Test
+    public void testGetVertexEdgesNonexistentVertexWeightedGraph() {
+        Set<?> adjcent = null;
+        try {
+            adjcent = graphLibrary.getEdgesOfVertex(graphWeighted, 51);
+        } catch (Exception e) {
+            assertEquals("The graph doesn't contains the specified vertex.", e.getMessage());
+        }
+        assertTrue(adjcent == null);
+    }
+
+    @Test
+    public void testGetVertexEdgesExistentVertexWeightedGraph() {
+        Set<?> adjcent = null;
+
+        assertEquals(true, graphLibrary.containsVertex(graphWeighted, 2));
+
+        try {
+            adjcent = graphLibrary.getAdjacentVertexes(graphWeighted, 2);
+        } catch (Exception e) {
+            assertTrue(e.getMessage() == null);
+        }
+        assertTrue(adjcent != null);
+    }
+
+
+
+
     @Test
     public void testContainsVertexNullUnweightedGraph() {
 
@@ -299,6 +451,101 @@ class GraphLibraryNewTest {
         }
         assertEquals(true, graphLibrary.containsEdge(graph,
                 new Edge<>(1, 6)));
+    }
+
+    @Test
+    public void testAddRepeatedEdgeWeightedGraph() {
+        try {
+            graphLibrary.addEdge(graphWeighted, 1, 6, 1.5f);
+            graphLibrary.addEdge(graphWeighted, 1, 6, 1.5f);
+        } catch (Exception e) {
+            assertEquals("The graph already contains the specified edge.",
+                    e.getMessage());
+        }
+        assertEquals(true, graphLibrary.containsEdge(graphWeighted,
+                new WeightedEdge<>(1, 6, 1.5f)));
+    }
+
+    @Test
+    public void testAddRepeatedEdgeDefaultWeightedGraph() {
+        try {
+            graphLibrary.addEdge(graphWeighted, 1, 6);
+            graphLibrary.addEdge(graphWeighted, 1, 6);
+        } catch (Exception e) {
+            assertEquals("The graph already contains the specified edge.",
+                    e.getMessage());
+        }
+        assertEquals(true, graphLibrary.containsEdge(graphWeighted,
+                new WeightedEdge<>(1, 6, EDGE_DEFAULT_WEIGHT)));
+    }
+
+    @Test
+    public void testGetAllVertexesNullGraph() {
+        Set<?> vertexes = null;
+        try {
+           vertexes = graphLibrary.getAllVertexes(null);
+        } catch (Exception e) {
+            assertEquals("Can not get vertexes from null.",
+                    e.getMessage());
+        }
+        assertTrue(vertexes == null);
+    }
+
+    @Test
+    public void testGetAllVertexesUnweightedGraph() {
+        Set<?> vertexes = null;
+        try {
+            vertexes = graphLibrary.getAllVertexes(graph);
+        } catch (Exception e) {
+            assertTrue(e == null);
+        }
+        assertTrue(vertexes != null);
+    }
+
+    @Test
+    public void testGetAllVertexesWeightedGraph() {
+        Set<?> vertexes = null;
+        try {
+            vertexes = graphLibrary.getAllVertexes(graphWeighted);
+        } catch (Exception e) {
+            assertTrue(e == null);
+        }
+        assertTrue(vertexes != null);
+    }
+
+
+    @Test
+    public void testGetAllEdgesNullGraph() {
+        Set<?> edges = null;
+        try {
+            edges = graphLibrary.getAllEdges(null);
+        } catch (Exception e) {
+            assertEquals("Can not get edges from null.",
+                    e.getMessage());
+        }
+        assertTrue(edges == null);
+    }
+
+    @Test
+    public void testGetAllEdgesUnweightedGraph() {
+        Set<?> edges = null;
+        try {
+            edges = graphLibrary.getAllEdges(graph);
+        } catch (Exception e) {
+            assertTrue(e == null);
+        }
+        assertTrue(edges != null);
+    }
+
+    @Test
+    public void testGetAllEdgesWeightedGraph() {
+        Set<?> edges = null;
+        try {
+            edges = graphLibrary.getAllEdges(graphWeighted);
+        } catch (Exception e) {
+            assertTrue(e == null);
+        }
+        assertTrue(edges != null);
     }
 
 
@@ -399,41 +646,23 @@ class GraphLibraryNewTest {
         assertEquals(4, graphLibrary.getEdgeNumber(graphIncompleteEdge));
     }
 
-
+    /**
+     * One possibility other than throw an exception or accept the loop is to
+     * ignore the vertex with a loop to itself and successfully read the graph.
+     * If you prefer this way, change the test below to check it out the cited scenario.
+     *
+     * */
     @Test
-    public void testSuccessFulReadingGraphFromFileWithVertexLoop() {
+    public void testReadingGraphFromFileWithVertexLoop() {
         try {
-            graphIncompleteEdge = graphLibrary.readGraph(incompleteEdgeGraph);
+            graphVertexLoop = graphLibrary.readGraph(vertexLoopGraph);
         } catch (Exception e) {
-            assertTrue(e == null);
+            assertEquals("The graph should not have a vertex with a edge to itself (i.e. loop).",
+                    e.getMessage());
         }
 
-        boolean isSuccessfullReading = graphIncompleteEdge != null;
-        assertTrue(isSuccessfullReading);
+        boolean isUnsuccessfullReading = graphVertexLoop == null;
+        assertTrue(isUnsuccessfullReading);
 
-    }
-
-    @Test
-    public void testVertexNumberUnweightedGraphWithVertexLoop() {
-
-        try {
-            graphIncompleteEdge = graphLibrary.readGraph(incompleteEdgeGraph);
-        } catch (Exception e) {
-            assertTrue(e == null);
-        }
-
-        assertEquals(5, graphLibrary.getVertexNumber(graphIncompleteEdge));
-    }
-
-    @Test
-    public void testEdgeNumberUnweightedGraphWithVertexLoop() {
-
-        try {
-            graphIncompleteEdge = graphLibrary.readGraph(incompleteEdgeGraph);
-        } catch (Exception e) {
-            assertTrue(e == null);
-        }
-
-        assertEquals(4, graphLibrary.getEdgeNumber(graphIncompleteEdge));
     }
 }
