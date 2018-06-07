@@ -1,9 +1,10 @@
-package com.ufcg.atg.library;
+package com.ufcg.atg;
 
 import com.ufcg.atg.graph.Edge;
 import com.ufcg.atg.graph.IGraph;
 import com.ufcg.atg.graph.IWeightedGraph;
 import com.ufcg.atg.graph.WeightedEdge;
+import com.ufcg.atg.library.GraphLibrary;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * @author Jobson Silva.
  */
-class GraphLibraryNewTest {
+class GraphTest {
     private final float EDGE_DEFAULT_WEIGHT = 1f;
     private GraphLibrary<Integer> graphLibrary;
 
@@ -30,6 +31,7 @@ class GraphLibraryNewTest {
     private IGraph<Integer, Edge<Integer>> graphEmptyFile;
     private IWeightedGraph<Integer, WeightedEdge<Integer>> graphWeighted;
     private IGraph<Integer, Edge<Integer>> graphDisconnected;
+    private IGraph<Integer, Edge<Integer>> graphWeightedDisconnected;
 
     private String sampleGraph = "GraphLibrary/src/graphFiles/sample_graph.txt";
     private String sampleWeightedGraph = "GraphLibrary/src/graphFiles/sample_graph_weighted.txt";
@@ -42,6 +44,7 @@ class GraphLibraryNewTest {
     private String vertexLoopGraph = "GraphLibrary/src/graphFiles/sample_graph_vertex_loop.txt";
     private String emptyGraph = "GraphLibrary/src/graphFiles/sample_graph_empty.txt";
     private String disconnectedGraph = "GraphLibrary/src/graphFiles/sample_graph_disconnected.txt";
+    private String disconnectedWeightedGraph = "GraphLibrary/src/graphFiles/sample_graph_weighted_disconnected.txt";
 
     @BeforeEach
     public void setUp() {
@@ -685,11 +688,178 @@ class GraphLibraryNewTest {
     public void testShortestPathWithUnexistentVertex() {
         String shortestPath = null;
         try {
-           shortestPath = graphLibrary.shortestPath(graph, 15, 19);
+           shortestPath = graphLibrary.shortestPath(graphWeighted, 15, 19);
         } catch (Exception e) {
             assertEquals("The graph doesn't contains both specified vertexes.", e.getMessage());
         }
         assertTrue(shortestPath == null);
     }
+
+    @Test
+    public void testShortestPathWithGraphNull() {
+        String shortestPath = null;
+        try {
+            shortestPath = graphLibrary.shortestPath(null, 15, 19);
+        } catch (Exception e) {
+            assertEquals("Can't perform shortest path on null.", e.getMessage());
+        }
+        assertTrue(shortestPath == null);
+    }
+
+    @Test
+    public void testShortestPathWithVertexNull() {
+        String shortestPath = null;
+        try {
+            shortestPath = graphLibrary.shortestPath(graphWeighted, null, null);
+        } catch (Exception e) {
+            assertEquals("The graph doesn't accept null vertex. So, " +
+                            "shortest path can't be performed.", e.getMessage());
+        }
+        assertTrue(shortestPath == null);
+    }
+
+    @Test
+    public void testShortestPathWithTwoVertexDisconnected() {
+        String shortestPath = null;
+        try {
+            graphWeightedDisconnected = graphLibrary.readGraph(disconnectedWeightedGraph);
+            shortestPath = graphLibrary.shortestPath(graphWeightedDisconnected, 2, 3);
+        } catch (Exception e) {
+            assertEquals("The vertex are not connected. So, shortest path can't be performed.",
+                    e.getMessage());
+        }
+        assertTrue(shortestPath == null);
+    }
+
+    @Test
+    public void testShortestPathWithTwoVertexConnected() {
+        String shortestPath = null;
+        try {
+            shortestPath = graphLibrary.shortestPath(graphWeighted, 2, 3);
+        } catch (Exception e) {
+            assertTrue(shortestPath != null);
+        }
+        assertTrue(shortestPath != null);
+    }
+
+
+    @Test
+    public void testBFSNullGraph() {
+        String bfs = null;
+        try {
+            bfs = graphLibrary.BFS(null, 2);
+        } catch (Exception e) {
+            assertEquals("Can't perform BFS on null.",
+                    e.getMessage());
+        }
+        assertTrue(bfs == null);
+    }
+
+    @Test
+    public void testDFSNullGraph() {
+        String dfs = null;
+        try {
+            dfs = graphLibrary.DFS(null, 2);
+        } catch (Exception e) {
+            assertEquals("Can't perform DFS on null.",
+                    e.getMessage());
+        }
+        assertTrue(dfs == null);
+    }
+
+    @Test
+    public void testBFSNullVertexGraph() {
+        String bfs = null;
+        try {
+            bfs = graphLibrary.BFS(graph, null);
+        } catch (Exception e) {
+            assertEquals("Can't perform BFS using null vertex.",
+                    e.getMessage());
+        }
+        assertTrue(bfs == null);
+    }
+
+    @Test
+    public void testDFSNullVertexGraph() {
+        String dfs = null;
+        try {
+            dfs = graphLibrary.DFS(graph, null);
+        } catch (Exception e) {
+            assertEquals("Can't perform DFS using null vertex.",
+                    e.getMessage());
+        }
+        assertTrue(dfs == null);
+    }
+
+    @Test
+    public void testBFSUnexistentVertexGraph() {
+        String bfs = null;
+        try {
+            bfs = graphLibrary.BFS(graph, 51);
+        } catch (Exception e) {
+            assertEquals("The graph doesn't contains the specified vertex.",
+                    e.getMessage());
+        }
+        assertTrue(bfs == null);
+    }
+
+    @Test
+    public void testDFSUnexistentVertexGraph() {
+        String dfs = null;
+        try {
+            dfs = graphLibrary.DFS(graph, 51);
+        } catch (Exception e) {
+            assertEquals("The graph doesn't contains the specified vertex.",
+                    e.getMessage());
+        }
+        assertTrue(dfs == null);
+    }
+
+
+    @Test
+    public void testBFSExistentVertexGraph() {
+        String bfs = null;
+        try {
+            bfs = graphLibrary.BFS(graph, 1);
+        } catch (Exception e) {
+            assertTrue(e == null);
+        }
+        assertTrue(bfs != null);
+    }
+
+    @Test
+    public void testDFSExistentVertexGraph() {
+        String dfs = null;
+        try {
+            dfs = graphLibrary.DFS(graph, 1);
+        } catch (Exception e) {
+            assertTrue(e == null);
+        }
+        assertTrue(dfs != null);
+    }
+
+    @Test
+    public void testMSTNullGraph() {
+        String mst = null;
+        try {
+            mst = graphLibrary.MST(null);
+        } catch (Exception e) {
+            assertEquals("Can't perform MST on null.",
+                    e.getMessage());
+        }
+        assertTrue(mst == null);
+    }
+
+    @Test
+    public void testMSTGraph() {
+        String mst = null;
+        try {
+            mst = graphLibrary.MST(graphWeighted);
+        } catch (Exception e) {
+            assertTrue(e == null);
+        }
+        assertTrue(mst != null);
+    }
+
 
 }
