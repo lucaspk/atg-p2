@@ -29,6 +29,7 @@ class GraphLibraryNewTest {
     private IGraph<Integer, Edge<Integer>> graphDuplicatedEdge;
     private IGraph<Integer, Edge<Integer>> graphEmptyFile;
     private IWeightedGraph<Integer, WeightedEdge<Integer>> graphWeighted;
+    private IGraph<Integer, Edge<Integer>> graphDisconnected;
 
     private String sampleGraph = "GraphLibrary/src/graphFiles/sample_graph.txt";
     private String sampleWeightedGraph = "GraphLibrary/src/graphFiles/sample_graph_weighted.txt";
@@ -40,7 +41,7 @@ class GraphLibraryNewTest {
     private String oneVertexEdgeGraph = "GraphLibrary/src/graphFiles/sample_graph_one_vertex_edge.txt";
     private String vertexLoopGraph = "GraphLibrary/src/graphFiles/sample_graph_vertex_loop.txt";
     private String emptyGraph = "GraphLibrary/src/graphFiles/sample_graph_empty.txt";
-
+    private String disconnectedGraph = "GraphLibrary/src/graphFiles/sample_graph_disconnected.txt";
 
     @BeforeEach
     public void setUp() {
@@ -50,7 +51,6 @@ class GraphLibraryNewTest {
         graphWeighted = graphLibrary.readWeightedGraph(sampleWeightedGraph);
         graphBlank = graphLibrary.readGraph(sampleGraphWithBlankLine);
         graphDuplicatedEdge = graphLibrary.readGraph(duplicatedEdgeGraph);
-
     }
 
     @Test
@@ -665,4 +665,31 @@ class GraphLibraryNewTest {
         assertTrue(isUnsuccessfullReading);
 
     }
+
+    @Test
+    public void testIsConnectedGraph() {
+        assertTrue(graphLibrary.connected(graph) == true);
+    }
+
+    @Test
+    public void testIsDisconnectedGraph() {
+        try {
+            graphDisconnected = graphLibrary.readGraph(disconnectedGraph);
+        } catch (Exception e) {
+            assertTrue(e == null);
+        }
+        assertTrue(graphLibrary.connected(graphDisconnected) == false);
+    }
+
+    @Test
+    public void testShortestPathWithUnexistentVertex() {
+        String shortestPath = null;
+        try {
+           shortestPath = graphLibrary.shortestPath(graph, 15, 19);
+        } catch (Exception e) {
+            assertEquals("The graph doesn't contains both specified vertexes.", e.getMessage());
+        }
+        assertTrue(shortestPath == null);
+    }
+
 }
