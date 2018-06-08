@@ -31,7 +31,7 @@ class GraphModuleTest {
     private IGraph<Integer, Edge<Integer>> graphEmptyFile;
     private IWeightedGraph<Integer, WeightedEdge<Integer>> graphWeighted;
     private IGraph<Integer, Edge<Integer>> graphDisconnected;
-    private IGraph<Integer, Edge<Integer>> graphWeightedDisconnected;
+    private IWeightedGraph<Integer, WeightedEdge<Integer>> graphWeightedDisconnected;
     private IGraph<Integer, Edge<Integer>> graphFloatNumbVertex;
     private IGraph<Integer, Edge<Integer>> graphNameNumbVertex;
     private IGraph<String, Edge<String>> graphStr;
@@ -841,8 +841,8 @@ class GraphModuleTest {
     public void testShortestPathWithTwoVertexDisconnected() {
         String shortestPath = null;
         try {
-            graphWeightedDisconnected = graphLibrary.readGraph(disconnectedWeightedGraph);
-            shortestPath = graphLibrary.shortestPath(graphWeightedDisconnected, 2, 3);
+            graphDisconnected = graphLibrary.readGraph(disconnectedGraph);
+            shortestPath = graphLibrary.shortestPath(graphDisconnected, 2, 3);
         } catch (Exception e) {
             assertEquals("There isn't a path between 2 and 3.",
                     e.getMessage());
@@ -1003,6 +1003,52 @@ class GraphModuleTest {
                 .toString();
 
         assertEquals(expectedMST, mst);
+    }
+    
+    @Test
+    public void testMSTWeightedGraph() {
+        String mst = null;
+        try {
+            mst = graphLibrary.MST(graphWeighted);
+        } catch (Exception e) {
+            assertTrue(e == null);
+        }
+        assertTrue(mst != null);
+        
+        String expectedMST = new StringBuilder()
+                .append("[3, 5] : 3.2").append(LINE_SEPARATOR)
+                .append("[2, 5] : 4.5").append(LINE_SEPARATOR)
+                .append("[1, 2] : 5.3").append(LINE_SEPARATOR)
+                .append("[4, 5] : 6.4").append(LINE_SEPARATOR)
+                .toString();
+        
+        assertEquals(expectedMST, mst);
+    }
+    
+    @Test
+    public void testMSTDisconnectedWeightedGraph() {
+        String mst = null;
+        try {
+        	graphWeightedDisconnected = graphLibrary.readWeightedGraph(disconnectedWeightedGraph);
+            mst = graphLibrary.MST(graphWeighted);
+        } catch (Exception e) {
+            assertEquals("Can't perform MST on disconnected graph.",
+                    e.getMessage());
+        }
+        assertTrue(mst == null);
+    }
+    
+    @Test
+    public void testMSTNoEdgesGraph() {
+        String mst = null;
+        try {
+        	graphNoEdges = graphLibrary.readGraph(noEdgesGraph);
+            mst = graphLibrary.MST(graphNoEdges);
+        } catch (Exception e) {
+            assertEquals("Can't perform MST on disconnected graph.",
+                    e.getMessage());
+        }
+        assertTrue(mst == null);
     }
 
     @Test
