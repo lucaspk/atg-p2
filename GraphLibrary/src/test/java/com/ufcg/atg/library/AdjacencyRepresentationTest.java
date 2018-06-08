@@ -15,48 +15,48 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 public class AdjacencyRepresentationTest {
 
-    private final int LARGE_GRAPH_SIZE = 2000;
-    private GraphLibrary<Integer> graphLibraryInt;
+    private final int LARGE_GRAPH_SIZE_REP = 2000;
+    private GraphLibrary<Integer> graphLibrary;
     private GraphLibrary<String> graphLibraryStr;
-    private IGraph<Integer, Edge<Integer>> largeIntegerGraph;
-    private IGraph<String, Edge<String>> largeStringGraph;
-    private IWeightedGraph<Integer, WeightedEdge<Integer>> largeWeightedIntegerGraph;
-    private IWeightedGraph<String, WeightedEdge<String>> largeWeightedStringGraph;
-    private IGraph<Integer, Edge<Integer>> disconnectedGraph;
-    private IGraph<Integer, Edge<Integer>> integerGraph;
-    private IGraph<Integer, Edge<Integer>> integerGraph2;
-    private IGraph<String, Edge<String>> stringGraph;
-    private IWeightedGraph<Integer, WeightedEdge<Integer>> weightedIntegerGraph;
-    private IWeightedGraph<String, WeightedEdge<String>> weightedStringGraph;
+    private IGraph<Integer, Edge<Integer>> largeIntegerGraphRep;
+    private IGraph<String, Edge<String>> largeStringGraphRep;
+    private IWeightedGraph<Integer, WeightedEdge<Integer>> largeWeightedIntegerGraphRep;
+    private IWeightedGraph<String, WeightedEdge<String>> largeWeightedStringGraphRep;
+    private IGraph<Integer, Edge<Integer>> disconnectedGraphRep;
+    private IGraph<Integer, Edge<Integer>> integerGraphRep;
+    private IGraph<Integer, Edge<Integer>> integerGraph2Rep;
+    private IGraph<String, Edge<String>> stringGraphRep;
+    private IWeightedGraph<Integer, WeightedEdge<Integer>> weightedIntegerGraphRep;
+    private IWeightedGraph<String, WeightedEdge<String>> weightedStringGraphRep;
 
     /**
      * Tests' set up.
      */
     @BeforeEach
     public void setUp() {
-        graphLibraryInt = new GraphLibrary<>();
+        graphLibrary = new GraphLibrary<>();
         graphLibraryStr = new GraphLibrary<>();
-        setUpLargeGraphOfIntegers();
-        setUpLargeGraphOfStrings();
-        setUpLargeWeightedGraphOfIntegers();
-        setUpLargeWeightedGraphOfStrings();
-        setUpDisconnectedGraph();
-        setUpGraphOfIntegers();
-        setUpGraphOfIntegers2();
-        setUpGraphOfStrings();
-        setUpWeightedGraphOfIntegers();
-        setUpWeightedGraphOfStrings();
+        setUpLargeGraphOfIntegersRep();
+        setUpLargeGraphOfStringsRep();
+        setUpLargeWeightedGraphOfIntegersRep();
+        setUpLargeWeightedGraphOfStringsRep();
+        setUpDisconnectedGraphRep();
+        setUpGraphOfIntegersRep();
+        setUpGraphOfIntegers2Rep();
+        setUpGraphOfStringsRep();
+        setUpWeightedGraphOfIntegersRep();
+        setUpWeightedGraphOfStringsRep();
     }
 
     /**
      * Constructs a large {@link Graph} with vertices of integer value.
      */
-    private void setUpLargeGraphOfIntegers() {
-        largeIntegerGraph = new Graph<>();
-        for (int i = 1; i <= LARGE_GRAPH_SIZE; i++) {
-            for (int j = 1; j <= LARGE_GRAPH_SIZE; j++) {
+    private void setUpLargeGraphOfIntegersRep() {
+        largeIntegerGraphRep = new Graph<>();
+        for (int i = 1; i <= LARGE_GRAPH_SIZE_REP; i++) {
+            for (int j = 1; j <= LARGE_GRAPH_SIZE_REP; j++) {
                 if (i != j) {
-                    largeIntegerGraph.addEdge(i, j);
+                    largeIntegerGraphRep.addEdge(i, j);
                 }
             }
         }
@@ -65,13 +65,13 @@ public class AdjacencyRepresentationTest {
     /**
      * Constructs a {@link Graph} with vertices of string value.
      */
-    private void setUpLargeGraphOfStrings() {
-        largeStringGraph = new Graph<>();
+    private void setUpLargeGraphOfStringsRep() {
+        largeStringGraphRep = new Graph<>();
 
-        for (int i = 1; i <= LARGE_GRAPH_SIZE; i++) {
-            for (int j = 1; j <= LARGE_GRAPH_SIZE; j++) {
+        for (int i = 1; i <= LARGE_GRAPH_SIZE_REP; i++) {
+            for (int j = 1; j <= LARGE_GRAPH_SIZE_REP; j++) {
                 if (i != j) {
-                    largeStringGraph.addEdge(Integer.toHexString(i), Integer.toHexString(j));
+                    largeStringGraphRep.addEdge(Integer.toHexString(i), Integer.toHexString(j));
                 }
             }
         }
@@ -80,13 +80,13 @@ public class AdjacencyRepresentationTest {
     /**
      * Constructs a weighted graph with vertices of integer value.
      */
-    private void setUpLargeWeightedGraphOfIntegers() {
-        largeWeightedIntegerGraph = new WeightedGraph<>();
+    private void setUpLargeWeightedGraphOfIntegersRep() {
+        largeWeightedIntegerGraphRep = new WeightedGraph<>();
 
-        for (int i = 1; i <= LARGE_GRAPH_SIZE; i++) {
-            for (int j = 1; j <= LARGE_GRAPH_SIZE; j++) {
+        for (int i = 1; i <= LARGE_GRAPH_SIZE_REP; i++) {
+            for (int j = 1; j <= LARGE_GRAPH_SIZE_REP; j++) {
                 if (i != j) {
-                    largeWeightedIntegerGraph.addEdge(i, j, (i+j)/2f);
+                    largeWeightedIntegerGraphRep.addEdge(i, j, (i+j)/2f);
                 }
             }
         }
@@ -95,13 +95,13 @@ public class AdjacencyRepresentationTest {
     /**
      * Constructs a weighted graph with vertices of string value.
      */
-    private void setUpLargeWeightedGraphOfStrings() {
-        largeWeightedStringGraph = new WeightedGraph<>();
+    private void setUpLargeWeightedGraphOfStringsRep() {
+        largeWeightedStringGraphRep = new WeightedGraph<>();
 
-        for (int i = 1; i <= LARGE_GRAPH_SIZE; i++) {
-            for (int j = 1; j <= LARGE_GRAPH_SIZE; j++) {
+        for (int i = 1; i <= LARGE_GRAPH_SIZE_REP; i++) {
+            for (int j = 1; j <= LARGE_GRAPH_SIZE_REP; j++) {
                 if (i != j) {
-                    largeWeightedStringGraph.addEdge(Integer.toHexString(i), Integer.toHexString(j), (i+j)/2f);
+                    largeWeightedStringGraphRep.addEdge(Integer.toHexString(i), Integer.toHexString(j), (i+j)/2f);
                 }
             }
         }
@@ -110,86 +110,86 @@ public class AdjacencyRepresentationTest {
     /**
      * Constructs a {@link Graph} with vertices of integer duplicate value.
      */
-    private void setUpGraphOfIntegers() {
+    private void setUpGraphOfIntegersRep() {
         Integer i1 = 1, i2 = 2, i3 = 3, i4 = 4, i5 = 5, i6 = 6;
-        integerGraph = new Graph<>();
-        integerGraph.addEdge(i1, i2);
-        integerGraph.addEdge(i1, i4);
-        integerGraph.addEdge(i1, i5);
-        integerGraph.addEdge(i2, i3);
-        integerGraph.addEdge(i2, i6);
-        integerGraph.addEdge(i2, i5);
-        integerGraph.addEdge(i3, i4);
-        integerGraph.addEdge(i3, i6);
-        integerGraph.addEdge(i4, i5);
-        integerGraph.addEdge(i5, i6);
+        integerGraphRep = new Graph<>();
+        integerGraphRep.addEdge(i1, i2);
+        integerGraphRep.addEdge(i1, i4);
+        integerGraphRep.addEdge(i1, i5);
+        integerGraphRep.addEdge(i2, i3);
+        integerGraphRep.addEdge(i2, i6);
+        integerGraphRep.addEdge(i2, i5);
+        integerGraphRep.addEdge(i3, i4);
+        integerGraphRep.addEdge(i3, i6);
+        integerGraphRep.addEdge(i4, i5);
+        integerGraphRep.addEdge(i5, i6);
     }
 
     /**
      * Constructs a {@link Graph} with vertices of integer value.
      */
-    private void setUpGraphOfIntegers2() {
+    private void setUpGraphOfIntegers2Rep() {
         Integer i1 = 1, i2 = 2, i3 = 3, i4 = 4, i5 = 5;
-        integerGraph2 = new Graph<>();
-        integerGraph2.addEdge(i1, i2);
-        integerGraph2.addEdge(i2, i5);
-        integerGraph2.addEdge(i5, i3);
-        integerGraph2.addEdge(i4, i5);
-        integerGraph2.addEdge(i1, i5);
+        integerGraph2Rep = new Graph<>();
+        integerGraph2Rep.addEdge(i1, i2);
+        integerGraph2Rep.addEdge(i2, i5);
+        integerGraph2Rep.addEdge(i5, i3);
+        integerGraph2Rep.addEdge(i4, i5);
+        integerGraph2Rep.addEdge(i1, i5);
     }
 
     /**
      * Constructs a {@link Graph} with vertices of string value.
      */
-    private void setUpGraphOfStrings() {
+    private void setUpGraphOfStringsRep() {
         String s1 = "A", s2 = "B", s3 = "C", s4 = "D", s5 = "E";
-        stringGraph = new Graph<>();
-        stringGraph.addEdge(s1, s2);
-        stringGraph.addEdge(s2, s5);
-        stringGraph.addEdge(s5, s3);
-        stringGraph.addEdge(s4, s5);
-        stringGraph.addEdge(s1, s5);
+        stringGraphRep = new Graph<>();
+        stringGraphRep.addEdge(s1, s2);
+        stringGraphRep.addEdge(s2, s5);
+        stringGraphRep.addEdge(s5, s3);
+        stringGraphRep.addEdge(s4, s5);
+        stringGraphRep.addEdge(s1, s5);
     }
 
     /**
      * Constructs a disconnected {@link Graph} with vertices of integer value.
      */
-    private void setUpDisconnectedGraph() {
+    private void setUpDisconnectedGraphRep() {
         Integer i1 = 1, i2 = 2, i3 = 3, i4 = 4, i5 = 5;
-        disconnectedGraph = new Graph<>();
-        disconnectedGraph.addVertex(i1);
-        disconnectedGraph.addVertex(i2);
-        disconnectedGraph.addVertex(i3);
-        disconnectedGraph.addVertex(i4);
-        disconnectedGraph.addVertex(i5);
+        disconnectedGraphRep = new Graph<>();
+        disconnectedGraphRep.addVertex(i1);
+        disconnectedGraphRep.addVertex(i2);
+        disconnectedGraphRep.addVertex(i3);
+        disconnectedGraphRep.addVertex(i4);
+        disconnectedGraphRep.addVertex(i5);
     }
 
     /**
      * Constructs a weighted graph with vertices of integer value.
      */
-    private void setUpWeightedGraphOfIntegers() {
+    private void setUpWeightedGraphOfIntegersRep() {
         Integer i1 = 1, i2 = 2, i3 = 3, i4 = 4, i5 = 5;
-        weightedIntegerGraph = new WeightedGraph<>();
-        weightedIntegerGraph.addEdge(i1, i2, 0.1f);
-        weightedIntegerGraph.addEdge(i2, i5, 0.2f);
-        weightedIntegerGraph.addEdge(i5, i3, 5f);
-        weightedIntegerGraph.addEdge(i3, i4, -9.5f);
-        weightedIntegerGraph.addEdge(i4, i5, 2.3f);
-        weightedIntegerGraph.addEdge(i1, i5,1f);
+        weightedIntegerGraphRep = new WeightedGraph<>();
+        weightedIntegerGraphRep.addEdge(i1, i2, 0.1f);
+        weightedIntegerGraphRep.addEdge(i2, i5, 0.2f);
+        weightedIntegerGraphRep.addEdge(i5, i3, 5f);
+        weightedIntegerGraphRep.addEdge(i3, i4, -9.5f);
+        weightedIntegerGraphRep.addEdge(i4, i5, 2.3f);
+        weightedIntegerGraphRep.addEdge(i1, i5,1f);
     }
 
     /**
      * Constructs a weighted graph with vertices of string value.
      */
-    private void setUpWeightedGraphOfStrings() {
+    private void setUpWeightedGraphOfStringsRep() {
         String s1 = "A", s2 = "B", s3 = "C", s4 = "D", s5 = "E";
-        weightedStringGraph = new WeightedGraph<>();
-        weightedStringGraph.addEdge(s1, s2, 0.1f);
-        weightedStringGraph.addEdge(s2, s5, 0.2f);
-        weightedStringGraph.addEdge(s5, s3, 5f);
-        weightedStringGraph.addEdge(s3, s4, -9.5f);
-        weightedStringGraph.addEdge(s4, s5, 2.3f);
-        weightedStringGraph.addEdge(s1, s5,1f);
+        weightedStringGraphRep = new WeightedGraph<>();
+        weightedStringGraphRep.addEdge(s1, s2, 0.1f);
+        weightedStringGraphRep.addEdge(s2, s5, 0.2f);
+        weightedStringGraphRep.addEdge(s5, s3, 5f);
+        weightedStringGraphRep.addEdge(s3, s4, -9.5f);
+        weightedStringGraphRep.addEdge(s4, s5, 2.3f);
+        weightedStringGraphRep.addEdge(s1, s5,1f);
     }
 
     /**
@@ -205,7 +205,7 @@ public class AdjacencyRepresentationTest {
                 .append("5 - ").append(LINE_SEPARATOR)
                 .toString();
 
-        String list = graphLibraryInt.graphRepresentation(disconnectedGraph, RepresentationType.ADJACENCY_LIST);
+        String list = graphLibrary.graphRepresentation(disconnectedGraphRep, RepresentationType.ADJACENCY_LIST);
         assertEquals(expectedList, list);
     }
 
@@ -225,7 +225,7 @@ public class AdjacencyRepresentationTest {
                 .append("6 0 1 1 0 1 0").append(LINE_SEPARATOR)
                 .toString();
 
-        String matrix = graphLibraryInt.graphRepresentation(integerGraph, RepresentationType.ADJACENCY_MATRIX);
+        String matrix = graphLibrary.graphRepresentation(integerGraphRep, RepresentationType.ADJACENCY_MATRIX);
         assertEquals(expectedMatrix, matrix);
     }
 
@@ -243,7 +243,7 @@ public class AdjacencyRepresentationTest {
                 .append("5 1 1 1 1 0").append(LINE_SEPARATOR)
                 .toString();
 
-        String matrix = graphLibraryInt.graphRepresentation(integerGraph2, RepresentationType.ADJACENCY_MATRIX);
+        String matrix = graphLibrary.graphRepresentation(integerGraph2Rep, RepresentationType.ADJACENCY_MATRIX);
         assertEquals(expectedMatrix, matrix);
     }
 
@@ -261,7 +261,7 @@ public class AdjacencyRepresentationTest {
                 .append("E 1 1 1 1 0").append(LINE_SEPARATOR)
                 .toString();
 
-        String matrix = graphLibraryStr.graphRepresentation(stringGraph, RepresentationType.ADJACENCY_MATRIX);
+        String matrix = graphLibraryStr.graphRepresentation(stringGraphRep, RepresentationType.ADJACENCY_MATRIX);
         assertEquals(expectedMatrix, matrix);
     }
 
@@ -279,7 +279,7 @@ public class AdjacencyRepresentationTest {
                 .append("5 0 0 0 0 0").append(LINE_SEPARATOR)
                 .toString();
 
-        String matrix = graphLibraryInt.graphRepresentation(disconnectedGraph, RepresentationType.ADJACENCY_MATRIX);
+        String matrix = graphLibrary.graphRepresentation(disconnectedGraphRep, RepresentationType.ADJACENCY_MATRIX);
         assertEquals(expectedMatrix, matrix);
     }
 
@@ -298,7 +298,7 @@ public class AdjacencyRepresentationTest {
                 .append("6 - 2 3 5").append(LINE_SEPARATOR)
                 .toString();
 
-        String list = graphLibraryInt.graphRepresentation(integerGraph, RepresentationType.ADJACENCY_LIST);
+        String list = graphLibrary.graphRepresentation(integerGraphRep, RepresentationType.ADJACENCY_LIST);
         assertEquals(expectedList, list);
     }
 
@@ -315,7 +315,7 @@ public class AdjacencyRepresentationTest {
                 .append("5 - 1 2 3 4").append(LINE_SEPARATOR)
                 .toString();
 
-        String list = graphLibraryInt.graphRepresentation(integerGraph2, RepresentationType.ADJACENCY_LIST);
+        String list = graphLibrary.graphRepresentation(integerGraph2Rep, RepresentationType.ADJACENCY_LIST);
         assertEquals(expectedList, list);
     }
 
@@ -332,7 +332,7 @@ public class AdjacencyRepresentationTest {
                 .append("E - A B C D").append(LINE_SEPARATOR)
                 .toString();
 
-        String list = graphLibraryStr.graphRepresentation(stringGraph, RepresentationType.ADJACENCY_LIST);
+        String list = graphLibraryStr.graphRepresentation(stringGraphRep, RepresentationType.ADJACENCY_LIST);
         assertEquals(expectedList, list);
     }
 
@@ -350,7 +350,7 @@ public class AdjacencyRepresentationTest {
                 .append("5 1 0.2 5 2.3 0").append(LINE_SEPARATOR)
                 .toString();
 
-        String matrix = graphLibraryInt.graphRepresentation(weightedIntegerGraph, RepresentationType.ADJACENCY_MATRIX);
+        String matrix = graphLibrary.graphRepresentation(weightedIntegerGraphRep, RepresentationType.ADJACENCY_MATRIX);
         assertEquals(expectedMatrix, matrix);
     }
 
@@ -368,7 +368,7 @@ public class AdjacencyRepresentationTest {
                 .append("E 1 0.2 5 2.3 0").append(LINE_SEPARATOR)
                 .toString();
 
-        String matrix = graphLibraryStr.graphRepresentation(weightedStringGraph, RepresentationType.ADJACENCY_MATRIX);
+        String matrix = graphLibraryStr.graphRepresentation(weightedStringGraphRep, RepresentationType.ADJACENCY_MATRIX);
         assertEquals(expectedMatrix, matrix);
     }
 
@@ -385,7 +385,7 @@ public class AdjacencyRepresentationTest {
                 .append("5 - 1(1) 2(0.2) 3(5) 4(2.3)").append(LINE_SEPARATOR)
                 .toString();
 
-        String list = graphLibraryInt.graphRepresentation(weightedIntegerGraph, RepresentationType.ADJACENCY_LIST);
+        String list = graphLibrary.graphRepresentation(weightedIntegerGraphRep, RepresentationType.ADJACENCY_LIST);
         assertEquals(expectedList, list);
     }
 
@@ -402,7 +402,7 @@ public class AdjacencyRepresentationTest {
                 .append("E - A(1) B(0.2) C(5) D(2.3)").append(LINE_SEPARATOR)
                 .toString();
 
-        String list = graphLibraryStr.graphRepresentation(weightedStringGraph, RepresentationType.ADJACENCY_LIST);
+        String list = graphLibraryStr.graphRepresentation(weightedStringGraphRep, RepresentationType.ADJACENCY_LIST);
         assertEquals(expectedList, list);
     }
 
@@ -412,9 +412,9 @@ public class AdjacencyRepresentationTest {
     @Test
     public void largeGraphOfIntegersListRepresentationTest() {
         StringBuilder expectedListBuilder = new StringBuilder();
-        for (int i = 1; i <= LARGE_GRAPH_SIZE; i++) {
+        for (int i = 1; i <= LARGE_GRAPH_SIZE_REP; i++) {
             expectedListBuilder.append(i + " -");
-            for (int j = 1; j <= LARGE_GRAPH_SIZE; j++) {
+            for (int j = 1; j <= LARGE_GRAPH_SIZE_REP; j++) {
                 if (i != j) {
                     expectedListBuilder.append(" " + j);
                 }
@@ -424,7 +424,7 @@ public class AdjacencyRepresentationTest {
 
         String expectedList = expectedListBuilder.toString();
 
-        String list = graphLibraryInt.graphRepresentation(largeIntegerGraph, RepresentationType.ADJACENCY_LIST);
+        String list = graphLibrary.graphRepresentation(largeIntegerGraphRep, RepresentationType.ADJACENCY_LIST);
         assertEquals(expectedList, list);
     }
 
@@ -435,14 +435,14 @@ public class AdjacencyRepresentationTest {
     public void largeGraphOfIntegersMatrixRepresentationTest() {
         StringBuilder expectedMatrixBuilder = new StringBuilder();
         expectedMatrixBuilder.append(" ");
-        for (int i = 1; i <= LARGE_GRAPH_SIZE; i++) {
+        for (int i = 1; i <= LARGE_GRAPH_SIZE_REP; i++) {
             expectedMatrixBuilder.append(" " + i);
         }
         expectedMatrixBuilder.append(LINE_SEPARATOR);
 
-        for (int i = 1; i <= LARGE_GRAPH_SIZE; i++) {
+        for (int i = 1; i <= LARGE_GRAPH_SIZE_REP; i++) {
             expectedMatrixBuilder.append(i);
-            for (int j = 1; j <= LARGE_GRAPH_SIZE; j++) {
+            for (int j = 1; j <= LARGE_GRAPH_SIZE_REP; j++) {
                 if (i != j) {
                     expectedMatrixBuilder.append(" 1");
                 } else {
@@ -454,7 +454,7 @@ public class AdjacencyRepresentationTest {
 
         String expectedMatrix = expectedMatrixBuilder.toString();
 
-        String matrix = graphLibraryInt.graphRepresentation(largeIntegerGraph, RepresentationType.ADJACENCY_MATRIX);
+        String matrix = graphLibrary.graphRepresentation(largeIntegerGraphRep, RepresentationType.ADJACENCY_MATRIX);
         assertEquals(expectedMatrix, matrix);
     }
 
@@ -464,9 +464,9 @@ public class AdjacencyRepresentationTest {
     @Test
     public void largeWeightedGraphOfIntegersListRepresentationTest() {
         StringBuilder expectedListBuilder = new StringBuilder();
-        for (int i = 1; i <= LARGE_GRAPH_SIZE; i++) {
+        for (int i = 1; i <= LARGE_GRAPH_SIZE_REP; i++) {
             expectedListBuilder.append(i + " -");
-            for (int j = 1; j <= LARGE_GRAPH_SIZE; j++) {
+            for (int j = 1; j <= LARGE_GRAPH_SIZE_REP; j++) {
                 if (i != j) {
                     expectedListBuilder.append(" " + j + "(" + Utils.floatToString((i+j)/2f) + ")");
                 }
@@ -476,7 +476,7 @@ public class AdjacencyRepresentationTest {
 
         String expectedList = expectedListBuilder.toString();
 
-        String list = graphLibraryInt.graphRepresentation(largeWeightedIntegerGraph, RepresentationType.ADJACENCY_LIST);
+        String list = graphLibrary.graphRepresentation(largeWeightedIntegerGraphRep, RepresentationType.ADJACENCY_LIST);
         assertEquals(expectedList, list);
     }
 
@@ -488,14 +488,14 @@ public class AdjacencyRepresentationTest {
         StringBuilder expectedMatrixBuilder = new StringBuilder();
 
         expectedMatrixBuilder.append(" ");
-        for (int i = 1; i <= LARGE_GRAPH_SIZE; i++) {
+        for (int i = 1; i <= LARGE_GRAPH_SIZE_REP; i++) {
             expectedMatrixBuilder.append(" " + i);
         }
         expectedMatrixBuilder.append(LINE_SEPARATOR);
 
-        for (int i = 1; i <= LARGE_GRAPH_SIZE; i++) {
+        for (int i = 1; i <= LARGE_GRAPH_SIZE_REP; i++) {
             expectedMatrixBuilder.append(i);
-            for (int j = 1; j <= LARGE_GRAPH_SIZE; j++) {
+            for (int j = 1; j <= LARGE_GRAPH_SIZE_REP; j++) {
                 if (i != j) {
                     expectedMatrixBuilder.append(" " + Utils.floatToString((i+j)/2f));
                 } else {
@@ -507,7 +507,7 @@ public class AdjacencyRepresentationTest {
 
         String expectedMatrix = expectedMatrixBuilder.toString();
 
-        String matrix = graphLibraryInt.graphRepresentation(largeWeightedIntegerGraph, RepresentationType.ADJACENCY_MATRIX);
+        String matrix = graphLibrary.graphRepresentation(largeWeightedIntegerGraphRep, RepresentationType.ADJACENCY_MATRIX);
         assertEquals(expectedMatrix, matrix);
     }
 
@@ -519,7 +519,7 @@ public class AdjacencyRepresentationTest {
         StringBuilder expectedListBuilder = new StringBuilder();
         SortedSet<String> set = new TreeSet<>();
 
-        for (int i = 1; i <= LARGE_GRAPH_SIZE; i++) {
+        for (int i = 1; i <= LARGE_GRAPH_SIZE_REP; i++) {
             set.add(Integer.toHexString(i));
         }
 
@@ -534,7 +534,7 @@ public class AdjacencyRepresentationTest {
         }
 
         String expectedList = expectedListBuilder.toString();
-        String list = graphLibraryStr.graphRepresentation(largeStringGraph, RepresentationType.ADJACENCY_LIST);
+        String list = graphLibraryStr.graphRepresentation(largeStringGraphRep, RepresentationType.ADJACENCY_LIST);
         assertEquals(expectedList, list);
     }
 
@@ -546,7 +546,7 @@ public class AdjacencyRepresentationTest {
         StringBuilder expectedMatrixBuilder = new StringBuilder();
         SortedSet<String> set = new TreeSet<>();
 
-        for (int i = 1; i <= LARGE_GRAPH_SIZE; i++) {
+        for (int i = 1; i <= LARGE_GRAPH_SIZE_REP; i++) {
             set.add(Integer.toHexString(i));
         }
 
@@ -569,7 +569,7 @@ public class AdjacencyRepresentationTest {
         }
 
         String expectedMatrix = expectedMatrixBuilder.toString();
-        String matrix = graphLibraryStr.graphRepresentation(largeStringGraph, RepresentationType.ADJACENCY_MATRIX);
+        String matrix = graphLibraryStr.graphRepresentation(largeStringGraphRep, RepresentationType.ADJACENCY_MATRIX);
         assertEquals(expectedMatrix, matrix);
     }
 
@@ -581,7 +581,7 @@ public class AdjacencyRepresentationTest {
         StringBuilder expectedListBuilder = new StringBuilder();
         SortedSet<String> set = new TreeSet<>();
 
-        for (int i = 1; i <= LARGE_GRAPH_SIZE; i++) {
+        for (int i = 1; i <= LARGE_GRAPH_SIZE_REP; i++) {
             set.add(Integer.toHexString(i));
         }
 
@@ -596,7 +596,7 @@ public class AdjacencyRepresentationTest {
         }
 
         String expectedList = expectedListBuilder.toString();
-        String list = graphLibraryStr.graphRepresentation(largeWeightedStringGraph, RepresentationType.ADJACENCY_LIST);
+        String list = graphLibraryStr.graphRepresentation(largeWeightedStringGraphRep, RepresentationType.ADJACENCY_LIST);
         assertEquals(expectedList, list);
     }
 
@@ -608,7 +608,7 @@ public class AdjacencyRepresentationTest {
         StringBuilder expectedMatrixBuilder = new StringBuilder();
         SortedSet<String> set = new TreeSet<>();
 
-        for (int i = 1; i <= LARGE_GRAPH_SIZE; i++) {
+        for (int i = 1; i <= LARGE_GRAPH_SIZE_REP; i++) {
             set.add(Integer.toHexString(i));
         }
 
@@ -631,7 +631,7 @@ public class AdjacencyRepresentationTest {
         }
 
         String expectedMatrix = expectedMatrixBuilder.toString();
-        String matrix = graphLibraryStr.graphRepresentation(largeWeightedStringGraph, RepresentationType.ADJACENCY_MATRIX);
+        String matrix = graphLibraryStr.graphRepresentation(largeWeightedStringGraphRep, RepresentationType.ADJACENCY_MATRIX);
         assertEquals(expectedMatrix, matrix);
     }
 }
