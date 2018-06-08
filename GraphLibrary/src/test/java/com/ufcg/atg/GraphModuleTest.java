@@ -2,6 +2,7 @@ package com.ufcg.atg;
 
 import com.ufcg.atg.graph.*;
 import com.ufcg.atg.library.GraphLibrary;
+import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -974,6 +975,104 @@ class GraphModuleTest {
     }
 
     @Test
+    public void testDFSWithDisconnectedGraph(){
+        try {
+            graphDisconnected = graphLibrary.readGraph(disconnectedGraph);
+        } catch (Exception e) {
+            assertTrue(e == null);
+        }
+        String expectedOn5 = new StringBuilder()
+                .append("5 - 0 -").append(LINE_SEPARATOR)
+                .append("3 - 1 5").append(LINE_SEPARATOR)
+                .append("1 - 2 3").append(LINE_SEPARATOR)
+                .toString();
+        String expectedOn3 = new StringBuilder()
+                .append("3 - 0 -").append(LINE_SEPARATOR)
+                .append("1 - 1 3").append(LINE_SEPARATOR)
+                .append("1 - 1 3").append(LINE_SEPARATOR)
+                .toString();
+        String expectedOn1 = new StringBuilder()
+                .append("1 - 0 -").append(LINE_SEPARATOR)
+                .append("3 - 1 1").append(LINE_SEPARATOR)
+                .append("5 - 2 3").append(LINE_SEPARATOR)
+                .toString();
+        String expectedOn2 = new StringBuilder()
+                .append("2 - 0 -").append(LINE_SEPARATOR)
+                .append("4 - 1 2").append(LINE_SEPARATOR)
+                .toString();
+        String expectedOn4 = new StringBuilder()
+                .append("4 - 0 -").append(LINE_SEPARATOR)
+                .append("2 - 1 4").append(LINE_SEPARATOR)
+                .toString();
+
+        Assert.assertEquals(expectedOn1, graphDisconnected.DFS(1));
+        Assert.assertEquals(expectedOn2, graphDisconnected.DFS(2));
+        Assert.assertEquals(expectedOn3, graphDisconnected.DFS(3));
+        Assert.assertEquals(expectedOn4, graphDisconnected.DFS(4));
+        Assert.assertEquals(expectedOn5, graphDisconnected.DFS(5));
+
+    }
+    @Test
+    public void testDFSSimpleGraph(){
+        try{
+            graph = graphLibrary.readGraph(sampleGraph);
+        }   catch (Exception e) {
+            assertTrue(e == null);
+        }
+
+        String expectedOn5 = new StringBuilder()
+                .append("5 - 0 -").append(LINE_SEPARATOR)
+                .append("1 - 1 5").append(LINE_SEPARATOR)
+                .append("2 - 2 1").append(LINE_SEPARATOR)
+                .append("3 - 1 5").append(LINE_SEPARATOR)
+                .append("4 - 1 5").append(LINE_SEPARATOR)
+                .toString();
+
+        String expectedOn3 = new StringBuilder()
+                .append("3 - 0 -").append(LINE_SEPARATOR)
+                .append("5 - 1 3").append(LINE_SEPARATOR)
+                .append("1 - 2 5").append(LINE_SEPARATOR)
+                .append("2 - 3 1").append(LINE_SEPARATOR)
+                .append("4 - 2 5").append(LINE_SEPARATOR)
+                .toString();
+
+        String expectedOn1 = new StringBuilder()
+                .append("1 - 0 -").append(LINE_SEPARATOR)
+                .append("2 - 1 1").append(LINE_SEPARATOR)
+                .append("5 - 2 2").append(LINE_SEPARATOR)
+                .append("3 - 3 5").append(LINE_SEPARATOR)
+                .append("4 - 3 5").append(LINE_SEPARATOR)
+                .toString();
+
+        String expectedOn2 = new StringBuilder()
+                .append("2 - 0 -").append(LINE_SEPARATOR)
+                .append("5 - 1 2").append(LINE_SEPARATOR)
+                .append("1 - 2 5").append(LINE_SEPARATOR)
+                .append("3 - 2 5").append(LINE_SEPARATOR)
+                .append("4 - 2 5").append(LINE_SEPARATOR)
+                .toString();
+
+        String expectedOn4 = new StringBuilder()
+                .append("4 - 0 -").append(LINE_SEPARATOR)
+                .append("5 - 1 4").append(LINE_SEPARATOR)
+                .append("1 - 2 5").append(LINE_SEPARATOR)
+                .append("2 - 3 1").append(LINE_SEPARATOR)
+                .append("3 - 2 5").append(LINE_SEPARATOR)
+                .toString();
+
+        Assert.assertEquals(expectedOn1, graph.DFS(1));
+        Assert.assertEquals(expectedOn2, graph.DFS(2));
+        Assert.assertEquals(expectedOn3, graph.DFS(3));
+        Assert.assertEquals(expectedOn4, graph.DFS(4));
+        Assert.assertEquals(expectedOn5, graph.DFS(5));
+    }
+
+    @Test
+    public void testConnectedWeightedGraph(){
+        Assert.assertTrue(graphLibrary.connected(graphWeighted));
+    }
+
+    @Test
     public void testMSTNullGraph() {
         String mst = null;
         try {
@@ -1096,5 +1195,4 @@ class GraphModuleTest {
         }
         assertTrue(graphNameNumbVertex == null);
     }
-
 }
