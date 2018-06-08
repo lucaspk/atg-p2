@@ -351,7 +351,7 @@ public class GraphLibrary<V extends Comparable<V>> {
      * @param graph Graph to be obtained MST.
      * @return MST of the graph.
      */
-    String MST(IGraph<V, ? extends Edge<V>> graph) {
+    public String MST(IGraph<V, ? extends Edge<V>> graph) {
         return graph.MST();
     }
 
