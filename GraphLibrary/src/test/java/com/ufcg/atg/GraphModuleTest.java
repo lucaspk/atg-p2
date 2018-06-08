@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * @author Jobson Silva.
+ * @author Jobson Silva, Jose Breno
  *
  */
 class GraphModuleTest {
@@ -30,11 +30,17 @@ class GraphModuleTest {
     private IGraph<Integer, Edge<Integer>> graphDuplicatedEdge;
     private IGraph<Integer, Edge<Integer>> graphEmptyFile;
     private IWeightedGraph<Integer, WeightedEdge<Integer>> graphWeighted;
-    private IGraph<Integer, Edge<Integer>> graphDisconnected;
     private IWeightedGraph<Integer, WeightedEdge<Integer>> graphWeightedDisconnected;
+    private IGraph<Integer, Edge<Integer>> graphDisconnected;
+    private IWeightedGraph<Integer, WeightedEdge<Integer>> integerWeightedGraph;
     private IGraph<Integer, Edge<Integer>> graphFloatNumbVertex;
     private IGraph<Integer, Edge<Integer>> graphNameNumbVertex;
     private IGraph<String, Edge<String>> graphStr;
+    private IGraph<Integer, Edge<Integer>> bigGraphStarForm;
+    private IGraph<Integer, Edge<Integer>> bigGraphListForm;
+    private IGraph<Integer, Edge<Integer>> bigGraphDisconnected;
+    private IGraph<Integer, Edge<Integer>> graphSparse;
+
 
     private String sampleGraph = "GraphLibrary/src/graphFiles/sample_graph.txt";
     private String sampleWeightedGraph = "GraphLibrary/src/graphFiles/sample_graph_weighted.txt";
@@ -56,12 +62,87 @@ class GraphModuleTest {
     @BeforeEach
     public void setUp() {
         graphLibrary = new GraphLibrary<>();
+        graphLibraryStr = new GraphLibrary<>();
 
         graph = graphLibrary.readGraph(sampleGraph);
         graphWeighted = graphLibrary.readWeightedGraph(sampleWeightedGraph);
         graphBlank = graphLibrary.readGraph(sampleGraphWithBlankLine);
         graphDuplicatedEdge = graphLibrary.readGraph(duplicatedEdgeGraph);
+
+        setUpGraphs();
     }
+
+    private void setUpGraphs() {
+        Integer v1 = -1;
+
+        setUpBigGraphStarForm(v1);
+
+        setUpBigGraphListForm();
+
+        setUpBigGraphDisconnected();
+
+        setUpGraphStrings();
+
+        setUpIntegerWeightedGraph();
+
+        setUpGraphSparse();
+    }
+
+    private void setUpIntegerWeightedGraph() {
+        Integer v1 = 1, v2 = 2, v3 = 3, v4 = 4;
+        Float w1 = 0.1f, w2 = 0.2f, w3 = 0.3f, w4 = 0.4f;
+
+        integerWeightedGraph = new WeightedGraph<>();
+        integerWeightedGraph.addEdge(v1, v2, w1);
+        integerWeightedGraph.addEdge(v2, v4, w2);
+        integerWeightedGraph.addEdge(v3, v1, w3);
+        integerWeightedGraph.addEdge(v4, v4, w4);
+    }
+
+    private void setUpGraphStrings() {
+        String v1 = "A", v2 = "B", v3 = "C", v4 = "D", v5 = "E";
+        graphStr = new Graph<>();
+        graphStr.addEdge(v1, v1);
+        graphStr.addEdge(v1, v2);
+        graphStr.addEdge(v1, v3);
+        graphStr.addEdge(v1, v4);
+        graphStr.addEdge(v1, v5);
+        graphStr.addEdge(v2, v5);
+        graphStr.addEdge(v5, v3);
+        graphStr.addEdge(v4, v5);
+    }
+
+    private void setUpBigGraphStarForm(Integer centralVertex) {
+        bigGraphStarForm = new Graph<>();
+        for (int v = 0; v < 79999; v++) {
+            graphLibrary.addEdge(bigGraphStarForm, centralVertex, v);
+        }
+    }
+
+    private void setUpBigGraphListForm() {
+        bigGraphListForm = new Graph<>();
+        for (int v = 1; v < 80000; v ++) {
+            graphLibrary.addEdge(bigGraphListForm, v, v - 1);
+        }
+    }
+
+    private void setUpBigGraphDisconnected() {
+        bigGraphDisconnected = new Graph<>();
+        for (int v = 0; v < 80000; v++) {
+            graphLibrary.addVertex(bigGraphDisconnected, v);
+        }
+    }
+
+    private void setUpGraphSparse() {
+        graphSparse = new Graph<>();
+
+        for (int v = 0; v < 100; v++) {
+            graphLibrary.addVertex(graphSparse, v);
+        }
+    }
+
+
+
 
     @Test
     public void testSuccessfulReadingWeightedGraphFromFile() {
@@ -81,6 +162,22 @@ class GraphModuleTest {
 
         assertEquals(5, graphLibrary.getVertexNumber(graphWeighted));
     }
+
+    @Test
+    public void verticesNumberBigGraphListFormTest() {
+        assertEquals(80000, graphLibrary.getVertexNumber(bigGraphListForm));
+    }
+
+    @Test
+    public void verticesNumberBigGraphStarFormTest() {
+        assertEquals(80000, graphLibrary.getVertexNumber(bigGraphStarForm));
+    }
+
+    @Test
+    public void verticesNumberBigGraphDisconnectedTest() {
+        assertEquals(80000, graphLibrary.getVertexNumber(bigGraphDisconnected));
+    }
+
 
     @Test
     public void testEdgeNumberWeightedGraphFromFile() {
@@ -915,6 +1012,36 @@ class GraphModuleTest {
     }
 
     @Test
+    public void BFSBigGraphListFormTest() {
+        String outputBigGraphListForm = 0 + " - 0 -" + System.getProperty("line.separator");
+
+        for (int v = 1; v < 80000; v++) {
+            outputBigGraphListForm += v + " - " + v + " " + (v - 1) + System.getProperty("line.separator");
+        }
+        assertEquals(outputBigGraphListForm, graphLibrary.BFS(bigGraphListForm, 0));
+    }
+
+    @Test
+    public void BFSBigGraphStarFormTest() {
+
+        String outputBigGraphStarForm = -1 + "" + " - 0 -" + System.getProperty("line.separator");
+
+        for (int v = 0; v < 79999; v++) {
+            outputBigGraphStarForm += v + " - " + 1 + " " + (-1) + System.getProperty("line.separator");
+        }
+
+        assertEquals(outputBigGraphStarForm, graphLibrary.BFS(bigGraphStarForm, -1));
+    }
+
+    @Test
+    public void BFSBigGraphDisconnectedTest() {
+        String expectedOutput = "1 - 0 -" + System.getProperty("line.separator");
+
+        assertEquals(expectedOutput, graphLibrary.BFS(bigGraphDisconnected, 1));
+    }
+
+
+    @Test
     public void testDFSNullVertexGraph() {
         String dfs = null;
         try {
@@ -1095,6 +1222,48 @@ class GraphModuleTest {
 
         assertTrue(representation != null);
         assertEquals(expectedMatrix, representation);
+    }
+
+    @Test
+    public void stringGraphAMRepresentation() {
+        String expectedOutput = "  A B C D E" + System.getProperty("line.separator") +
+                "A 1 1 1 1 1" + System.getProperty("line.separator") +
+                "B 1 0 0 0 1" + System.getProperty("line.separator") +
+                "C 1 0 0 0 1" + System.getProperty("line.separator") +
+                "D 1 0 0 0 1" + System.getProperty("line.separator") +
+                "E 1 1 1 1 0" + System.getProperty("line.separator");
+
+        assertEquals(expectedOutput, graphLibraryStr.graphRepresentation(graphStr, RepresentationType.ADJACENCY_MATRIX));
+    }
+
+    @Test
+    public void integerWeightedGraphAMRepresentation() {
+        String expectedOutput = "  1 2 3 4" + System.getProperty("line.separator") +
+                "1 0 0.1 0.3 0" + System.getProperty("line.separator") +
+                "2 0.1 0 0 0.2" + System.getProperty("line.separator") +
+                "3 0.3 0 0 0" + System.getProperty("line.separator") +
+                "4 0 0.2 0 0.4" + System.getProperty("line.separator");
+
+        assertEquals(expectedOutput, graphLibrary.graphRepresentation(integerWeightedGraph, RepresentationType.ADJACENCY_MATRIX));
+    }
+
+    @Test
+    public void sparseGraphAMRepresentationTest() {
+        String sparseGraphOutput = "";
+        String header = " ";
+        String body = "";
+
+        for (int v = 0; v < 100; v++) {
+            header += " " + v;
+            body += v;
+            for (int v2 = 0; v2 < 100; v2++) {
+                body += " " + 0;
+            }
+            body += System.getProperty("line.separator");
+        }
+        sparseGraphOutput += header + System.getProperty("line.separator") + body;
+
+        assertEquals(sparseGraphOutput, graphLibrary.graphRepresentation(graphSparse, RepresentationType.ADJACENCY_MATRIX));
     }
 
     @Test
