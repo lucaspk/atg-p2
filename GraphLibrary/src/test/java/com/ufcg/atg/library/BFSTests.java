@@ -18,9 +18,6 @@ public class BFSTests {
     private IGraph<Integer, Edge<Integer>> bigGraphListForm;
     private IGraph<Integer, Edge<Integer>> bigGraphDisconnected;
 
-    String outputBigGraphStarForm = "";
-    String outputBigGraphListForm = "";
-
     @BeforeEach
     public void setUp() {
         graphLibrary = new GraphLibrary<>();
@@ -53,24 +50,12 @@ public class BFSTests {
             graphLibrary.addEdge(bigGraphStarForm, centralVertex, v);
         }
 
-        outputBigGraphStarForm = centralVertex + " 0 -" + System.getProperty("line.separator");
-
-        for (int v = 0; v < 79999; v++) {
-            outputBigGraphStarForm += v + " - " + 1 + " " + centralVertex + System.getProperty("line.separator");
-        }
-
     }
 
     private void setUpBigGraphListForm() {
         bigGraphListForm = new Graph<>();
         for (int v = 2; v < 80001; v ++) {
             graphLibrary.addEdge(bigGraphListForm, v, v - 1);
-        }
-
-        outputBigGraphListForm = 1 + " - 0 -" + System.getProperty("line.separator");
-
-        for (int v = 2; v < 80001; v++) {
-            outputBigGraphListForm += v + " - " + (v - 1) + " " + (v - 1) + System.getProperty("line.separator");
         }
     }
 
@@ -123,12 +108,24 @@ public class BFSTests {
 
     @Test
     public void bigGraphListFormTest() {
+        String outputBigGraphListForm = 1 + " - 0 -" + System.getProperty("line.separator");
+
+        for (int v = 2; v < 80001; v++) {
+            outputBigGraphListForm += v + " - " + (v - 1) + " " + (v - 1) + System.getProperty("line.separator");
+        }
         assertEquals(outputBigGraphListForm, graphLibrary.BFS(bigGraphListForm, 1));
     }
 
     @Test
     public void bigGraphStarFormTest() {
-        assertEquals(outputBigGraphStarForm, graphLibrary.BFS(bigGraphStarForm, 1));
+
+        String outputBigGraphStarForm = -1 + "" + " - 0 -" + System.getProperty("line.separator");
+
+        for (int v = 0; v < 79999; v++) {
+            outputBigGraphStarForm += v + " - " + 1 + " " + (-1) + System.getProperty("line.separator");
+        }
+
+        assertEquals(outputBigGraphStarForm, graphLibrary.BFS(bigGraphStarForm, -1));
     }
 
     @Test
