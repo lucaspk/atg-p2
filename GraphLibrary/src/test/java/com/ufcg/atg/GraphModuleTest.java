@@ -1,24 +1,24 @@
 package com.ufcg.atg;
 
-import com.ufcg.atg.graph.Edge;
-import com.ufcg.atg.graph.IGraph;
-import com.ufcg.atg.graph.IWeightedGraph;
-import com.ufcg.atg.graph.WeightedEdge;
+import com.ufcg.atg.graph.*;
 import com.ufcg.atg.library.GraphLibrary;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Set;
 
+import static com.ufcg.atg.util.Utils.LINE_SEPARATOR;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Jobson Silva.
+ *
  */
-class GraphTest {
+class GraphModuleTest {
     private final float EDGE_DEFAULT_WEIGHT = 1f;
     private GraphLibrary<Integer> graphLibrary;
+    private GraphLibrary<String> graphLibraryStr;
 
     private IGraph<Integer, Edge<Integer>> graph;
     private IGraph<Integer, Edge<Integer>> graphBlank;
@@ -32,6 +32,9 @@ class GraphTest {
     private IWeightedGraph<Integer, WeightedEdge<Integer>> graphWeighted;
     private IGraph<Integer, Edge<Integer>> graphDisconnected;
     private IGraph<Integer, Edge<Integer>> graphWeightedDisconnected;
+    private IGraph<Integer, Edge<Integer>> graphFloatNumbVertex;
+    private IGraph<Integer, Edge<Integer>> graphNameNumbVertex;
+    private IGraph<String, Edge<String>> graphStr;
 
     private String sampleGraph = "GraphLibrary/src/graphFiles/sample_graph.txt";
     private String sampleWeightedGraph = "GraphLibrary/src/graphFiles/sample_graph_weighted.txt";
@@ -45,6 +48,10 @@ class GraphTest {
     private String emptyGraph = "GraphLibrary/src/graphFiles/sample_graph_empty.txt";
     private String disconnectedGraph = "GraphLibrary/src/graphFiles/sample_graph_disconnected.txt";
     private String disconnectedWeightedGraph = "GraphLibrary/src/graphFiles/sample_graph_weighted_disconnected.txt";
+    private String floatNumbVertexGraph = "GraphLibrary/src/graphFiles/sample_graph_float_vertex_numb.txt";
+    private String nameNumbVertexGraph = "GraphLibrary/src/graphFiles/sample_graph_name_vertex_numb.txt";
+    private String sampleWeightedGraphNegCycle = "GraphLibrary/src/graphFiles/sample_graph_weighted_neg_cycle.txt";
+    private String stringGraph = "GraphLibrary/src/graphFiles/sample_graph_str.txt";
 
     @BeforeEach
     public void setUp() {
@@ -114,6 +121,39 @@ class GraphTest {
         boolean isUnsuccessfullReading = graphOneVertexEdge == null;
         assertTrue(isUnsuccessfullReading);
 
+    }
+
+    @Test
+    public void testUnsuccessfullReadingNullFile() {
+        IGraph<Integer, Edge<Integer>> graphNull = null;
+        try {
+            graphNull = graphLibrary.readGraph(null);
+        } catch (Exception e) {
+            assertTrue(e != null);
+            assertEquals("Can't read file from null.", e.getMessage());
+        }
+
+        boolean isUnsuccessfullReading = graphNull == null;
+        assertTrue(isUnsuccessfullReading);
+
+    }
+
+    @Test
+    public void testUnsuccessfullReadingNotFoundFile() {
+        IGraph<Integer, Edge<Integer>> graphFromNotFoundFile = null;
+
+        String expected = "java.io.FileNotFoundException: " +
+                "jupiter\\madeira\\dinamarca\\zebra.txt " +
+                "(O sistema não pode encontrar o caminho especificado)";
+        try {
+            graphFromNotFoundFile = graphLibrary.readGraph("jupiter/madeira/dinamarca/zebra.txt");
+        } catch (Exception e) {
+            assertTrue(e != null);
+            assertEquals(expected, e.getMessage());
+        }
+
+        boolean isUnsuccessfullReading = graphFromNotFoundFile == null;
+        assertTrue(isUnsuccessfullReading);
     }
 
     @Test
@@ -393,6 +433,18 @@ class GraphTest {
     }
 
     @Test
+    public void testGetEdgeMeanFromNullGraph() {
+        float mean = -1.5f;
+        try {
+            mean = graphLibrary.getMeanEdge(null);
+        } catch (Exception e) {
+            assertEquals("Can't get edge mean from null", e.getMessage());
+        }
+        assertEquals(-1.5f , mean);
+
+    }
+
+    @Test
     public void testAddVertexUnweightedGraph() {
         graphLibrary.addVertex(graph, 6);
         assertEquals(true,
@@ -420,6 +472,17 @@ class GraphTest {
     }
 
     @Test
+    public void testAddVertexNullUnweightedGraph() {
+        try {
+            graphLibrary.addVertex(null, 6);
+        } catch (Exception e) {
+            assertEquals("Can't add vertex to null.",
+                    e.getMessage());
+        }
+    }
+
+
+    @Test
     public void testAddEdgeUnweightedGraph() {
         graphLibrary.addEdge(graph, 1, 6);
 
@@ -428,10 +491,34 @@ class GraphTest {
     }
 
     @Test
+    public void testAddEdgeStringUnweightedGraph() {
+
+        /*There is no method to read vertex as string, so the bellow commented code line will
+        cause a compilation error. A method to read a generic type of vertex should be created.
+
+        graphStr = graphLibraryStr.readGraph(stringGraph);
+
+        */
+        try {
+            graphLibraryStr.addEdge(graphStr, "APLP", "ATG");
+        } catch (Exception e) {
+            assertTrue(e == null);
+        }
+        assertEquals(true, graphLibraryStr.containsEdge(graphStr,
+                new Edge<String>("APLP", "ATG")));
+    }
+
+    @Test
     public void testAddNullEdgeUnweightedGraph() {
-        graphLibrary.addEdge(graph, null, null);
-        graphLibrary.addEdge(graph, 1, null);
-        graphLibrary.addEdge(graph, null, 1);
+
+        try {
+            graphLibrary.addEdge(graph, null, null);
+            graphLibrary.addEdge(graph, 1, null);
+            graphLibrary.addEdge(graph, null, 1);
+        } catch (Exception e) {
+            assertEquals("Can't create edge with vertex null.",
+                    e.getMessage());
+        }
 
         assertEquals(false, graphLibrary.containsEdge(graph,
                 new Edge<>(null, null)));
@@ -467,6 +554,38 @@ class GraphTest {
         }
         assertEquals(true, graphLibrary.containsEdge(graphWeighted,
                 new WeightedEdge<>(1, 6, 1.5f)));
+    }
+
+    @Test
+    public void testAddEdgeWeightedNullGraph() {
+        try {
+            graphLibrary.addEdge(null, 1, 6, 1.5f);
+        } catch (Exception e) {
+            assertEquals("Can't add edge on null.",
+                    e.getMessage());
+        }
+    }
+
+    @Test
+    public void testAddEdgeUnweightedNullGraph() {
+        try {
+            graphLibrary.addEdge(null, 1, 6);
+        } catch (Exception e) {
+            assertEquals("Can't add edge on null.",
+                    e.getMessage());
+        }
+    }
+
+    @Test
+    public void testAddNullEdgeWeightedGraph() {
+        try {
+            graphLibrary.addEdge(graphWeighted, null, null, 1.5f);
+            graphLibrary.addEdge(graphWeighted, 1, null, 1.5f);
+            graphLibrary.addEdge(graphWeighted, null, 1, 1.5f);
+        } catch (Exception e) {
+            assertEquals("Can't create edge with vertex null.",
+                    e.getMessage());
+        }
     }
 
     @Test
@@ -725,7 +844,7 @@ class GraphTest {
             graphWeightedDisconnected = graphLibrary.readGraph(disconnectedWeightedGraph);
             shortestPath = graphLibrary.shortestPath(graphWeightedDisconnected, 2, 3);
         } catch (Exception e) {
-            assertEquals("The vertex are not connected. So, shortest path can't be performed.",
+            assertEquals("There isn't a path between 2 and 3.",
                     e.getMessage());
         }
         assertTrue(shortestPath == null);
@@ -737,9 +856,25 @@ class GraphTest {
         try {
             shortestPath = graphLibrary.shortestPath(graphWeighted, 2, 3);
         } catch (Exception e) {
-            assertTrue(shortestPath != null);
+            assertTrue(e == null);
         }
         assertTrue(shortestPath != null);
+    }
+
+    @Test
+    public void testShortestPathWithNegativeCycle() {
+        String shortestPath = null;
+        IGraph<Integer, Edge<Integer>> graphNegCycle = null;
+
+        try {
+            graphNegCycle = graphLibrary.readGraph(sampleWeightedGraphNegCycle);
+            shortestPath = graphLibrary.shortestPath(graphNegCycle, 1, 3);
+        } catch (Exception e) {
+            assertEquals("The shortest path cannot be found in a" +
+                    " graph with negative circle.", e.getMessage());
+        }
+        assertTrue(shortestPath == null);
+        assertTrue(graphNegCycle != null);
     }
 
 
@@ -854,12 +989,112 @@ class GraphTest {
     public void testMSTGraph() {
         String mst = null;
         try {
-            mst = graphLibrary.MST(graphWeighted);
+            mst = graphLibrary.MST(graph);
         } catch (Exception e) {
             assertTrue(e == null);
         }
         assertTrue(mst != null);
+
+        String expectedMST = new StringBuilder()
+                .append("[1, 2]").append(LINE_SEPARATOR)
+                .append("[1, 5]").append(LINE_SEPARATOR)
+                .append("[3, 5]").append(LINE_SEPARATOR)
+                .append("[4, 5]").append(LINE_SEPARATOR)
+                .toString();
+
+        assertEquals(expectedMST, mst);
     }
 
+    @Test
+    public void testRepresentationNullGraph() {
+        String representation = null;
+        try {
+            representation = graphLibrary.graphRepresentation(null, RepresentationType.ADJACENCY_MATRIX);
+        } catch (Exception e) {
+            assertEquals("Can't perform an representation for null.",
+                    e.getMessage());
+        }
+        assertTrue(representation == null);
+    }
+
+    @Test
+    public void testRepresentationNull() {
+        String representation = null;
+        try {
+            representation = graphLibrary.graphRepresentation(graph, null);
+        } catch (Exception e) {
+            assertEquals("The representation type is null.",
+                    e.getMessage());
+        }
+        assertTrue(representation == null);
+    }
+
+    @Test
+    public void testRepresentationAdjMatrix() {
+        String representation = null;
+        try {
+            representation = graphLibrary.graphRepresentation(graph, RepresentationType.ADJACENCY_MATRIX);
+        } catch (Exception e) {
+            assertTrue(e == null);
+        }
+
+        String expectedMatrix = new StringBuilder()
+                .append("  1 2 3 4 5").append(LINE_SEPARATOR)
+                .append("1 0 1 0 0 1").append(LINE_SEPARATOR)
+                .append("2 1 0 0 0 1").append(LINE_SEPARATOR)
+                .append("3 0 0 0 0 1").append(LINE_SEPARATOR)
+                .append("4 0 0 0 0 1").append(LINE_SEPARATOR)
+                .append("5 1 1 1 1 0").append(LINE_SEPARATOR)
+                .toString();
+
+        assertTrue(representation != null);
+        assertEquals(expectedMatrix, representation);
+    }
+
+    @Test
+    public void testRepresentationAdjList() {
+        String representation = null;
+        try {
+            representation = graphLibrary.graphRepresentation(graph, RepresentationType.ADJACENCY_LIST);
+        } catch (Exception e) {
+            assertTrue(e == null);
+        }
+        String expectedList = new StringBuilder()
+                .append("1 - 2 5").append(LINE_SEPARATOR)
+                .append("2 - 1 5").append(LINE_SEPARATOR)
+                .append("3 - 5").append(LINE_SEPARATOR)
+                .append("4 - 5").append(LINE_SEPARATOR)
+                .append("5 - 1 2 3 4").append(LINE_SEPARATOR)
+                .toString();
+
+        assertTrue(representation != null);
+        assertEquals(expectedList, representation);
+    }
+
+    /**
+     * There are some possibilities: round the number of vertex, floor function, ceil function or throw
+     * an exception. Change the below test according to whatever scenario you want to.
+     * */
+    @Test
+    public void testReadGraphFromFileWithFloatNumberVertex() {
+        try {
+            graphFloatNumbVertex = graphLibrary.readGraph(floatNumbVertexGraph);
+        } catch (Exception e) {
+            assertTrue(e == null);
+        }
+        assertTrue(graphFloatNumbVertex != null);
+        assertEquals(5, graphFloatNumbVertex.getVertexNumber());
+    }
+
+    @Test
+    public void testReadGraphFromFileWithNameInsteadNumberVertex() {
+        try {
+            graphNameNumbVertex = graphLibrary.readGraph(nameNumbVertexGraph);
+        } catch (Exception e) {
+            assertEquals("The number of vertex in the file should be a number.",
+                    e.getMessage());
+        }
+        assertTrue(graphNameNumbVertex == null);
+    }
 
 }
