@@ -1,5 +1,7 @@
-package com.ufcg.atg.graph;
+package com.ufcg.atg.library;
 
+import com.ufcg.atg.graph.*;
+import com.ufcg.atg.library.GraphLibrary;
 import com.ufcg.atg.util.Utils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,12 +21,16 @@ public class AdjacencyRepresentationTest {
     private IGraph<String, Edge<String>> largeStringGraph;
     private IWeightedGraph<Integer, WeightedEdge<Integer>> weightedIntegerGraph;
     private IWeightedGraph<String, WeightedEdge<String>> weightedStringGraph;
+    private GraphLibrary<Integer> graphLibraryInt;
+    private GraphLibrary<String> graphLibraryStr;
 
     /**
      * Tests' set up.
      */
     @BeforeEach
     public void setUp() {
+        graphLibraryInt = new GraphLibrary<>();
+        graphLibraryStr = new GraphLibrary<>();
         setUpLargeGraphOfIntegers();
         setUpLargeGraphOfStrings();
         setUpLargeWeightedGraphOfIntegers();
@@ -108,7 +114,7 @@ public class AdjacencyRepresentationTest {
 
         String expectedList = expectedListBuilder.toString();
 
-        String list = largeIntegerGraph.graphRepresentation(RepresentationType.ADJACENCY_LIST);
+        String list = graphLibraryInt.graphRepresentation(largeIntegerGraph, RepresentationType.ADJACENCY_LIST);
         assertEquals(expectedList, list);
     }
 
@@ -138,7 +144,7 @@ public class AdjacencyRepresentationTest {
 
         String expectedList = expectedListBuilder.toString();
 
-        String list = largeIntegerGraph.graphRepresentation(RepresentationType.ADJACENCY_MATRIX);
+        String list = graphLibraryInt.graphRepresentation(largeIntegerGraph, RepresentationType.ADJACENCY_MATRIX);
         assertEquals(expectedList, list);
     }
 
@@ -160,7 +166,7 @@ public class AdjacencyRepresentationTest {
 
         String expectedList = expectedListBuilder.toString();
 
-        String list = weightedIntegerGraph.graphRepresentation(RepresentationType.ADJACENCY_LIST);
+        String list = graphLibraryInt.graphRepresentation(weightedIntegerGraph, RepresentationType.ADJACENCY_LIST);
         assertEquals(expectedList, list);
     }
 
@@ -191,7 +197,7 @@ public class AdjacencyRepresentationTest {
 
         String expectedList = expectedListBuilder.toString();
 
-        String list = weightedIntegerGraph.graphRepresentation(RepresentationType.ADJACENCY_MATRIX);
+        String list = graphLibraryInt.graphRepresentation(weightedIntegerGraph, RepresentationType.ADJACENCY_MATRIX);
         assertEquals(expectedList, list);
     }
 
@@ -218,7 +224,7 @@ public class AdjacencyRepresentationTest {
         }
 
         String expectedList = expectedListBuilder.toString();
-        String list = largeStringGraph.graphRepresentation(RepresentationType.ADJACENCY_LIST);
+        String list = graphLibraryStr.graphRepresentation(largeStringGraph, RepresentationType.ADJACENCY_LIST);
         assertEquals(expectedList, list);
     }
 
@@ -253,7 +259,7 @@ public class AdjacencyRepresentationTest {
         }
 
         String expectedList = expectedListBuilder.toString();
-        String list = largeStringGraph.graphRepresentation(RepresentationType.ADJACENCY_MATRIX);
+        String list = graphLibraryStr.graphRepresentation(largeStringGraph, RepresentationType.ADJACENCY_MATRIX);
         assertEquals(expectedList, list);
     }
 
@@ -280,7 +286,7 @@ public class AdjacencyRepresentationTest {
         }
 
         String expectedList = expectedListBuilder.toString();
-        String list = weightedStringGraph.graphRepresentation(RepresentationType.ADJACENCY_LIST);
+        String list = graphLibraryStr.graphRepresentation(weightedStringGraph, RepresentationType.ADJACENCY_LIST);
         assertEquals(expectedList, list);
     }
 
@@ -315,7 +321,7 @@ public class AdjacencyRepresentationTest {
         }
 
         String expectedList = expectedListBuilder.toString();
-        String list = weightedStringGraph.graphRepresentation(RepresentationType.ADJACENCY_MATRIX);
+        String list = graphLibraryStr.graphRepresentation(weightedStringGraph, RepresentationType.ADJACENCY_MATRIX);
         assertEquals(expectedList, list);
     }
 }
